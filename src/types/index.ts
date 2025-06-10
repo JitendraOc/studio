@@ -1,3 +1,4 @@
+
 export interface Module {
   id: string;
   title: string;
@@ -6,6 +7,9 @@ export interface Module {
   completed: boolean;
   totalChapters?: number;
   completedChapters?: number;
+  dueDate: Date; // Added for timeline
+  activityType: 'assignment' | 'quiz' | 'reading' | 'event'; // Added for timeline
+  category?: string; // Added for timeline, e.g., "Digital Literacy"
 }
 
 export interface LogbookEntry {

@@ -8,22 +8,38 @@ import CompletedModulesSection from '@/components/dashboard/CompletedModulesSect
 import type { LogbookEntry, Module, SupportContact } from '@/types';
 
 // Mock Data
+const now = new Date();
+const tomorrow = new Date(now);
+tomorrow.setDate(now.getDate() + 1);
+const dayAfterTomorrow = new Date(now);
+dayAfterTomorrow.setDate(now.getDate() + 2);
+const yesterday = new Date(now);
+yesterday.setDate(now.getDate() - 1);
+const twoDaysAgo = new Date(now);
+twoDaysAgo.setDate(now.getDate() - 2);
+
+
 const mockModules: Module[] = [
-  { id: '1', title: 'Module 1: Introduction to Anatomy', description: 'Core concepts of human anatomy, skeletal system, and musculature.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5 },
-  { id: '2', title: 'Module 2: Physiology & Bodily Functions', description: 'Understanding the cardiovascular, respiratory, and nervous systems.', unlocked: true, completed: false, totalChapters: 8, completedChapters: 3 },
-  { id: '3', title: 'Module 3: Pharmacology Fundamentals', description: 'Introduction to drug classifications, pharmacokinetics, and pharmacodynamics.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0 },
-  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures and patient interaction.', unlocked: true, completed: false, totalChapters: 10, completedChapters: 2 },
-  { id: '5', title: 'Module 5: Medical Ethics & Law', description: 'Understanding legal responsibilities and ethical considerations in healthcare.', unlocked: true, completed: true, totalChapters: 4, completedChapters: 4 },
-  { id: '6', title: 'Module 6: Advanced Diagnostics', description: 'Exploring advanced imaging techniques and laboratory tests.', unlocked: true, completed: false, totalChapters: 7, completedChapters: 1 },
-  { id: '7', title: 'Module 7: Pediatrics Overview', description: 'Fundamental concepts in pediatric care and common childhood illnesses.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5 },
-  { id: '8', title: 'Module 8: Geriatric Medicine', description: 'Special considerations for elderly patient care.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0 },
-  { id: '9', title: 'Module 9: Emergency Medicine Basics', description: 'Initial assessment and management of emergency medical conditions.', unlocked: true, completed: true, totalChapters: 8, completedChapters: 8 },
-  { id: '10', title: 'Module 10: Surgical Principles', description: 'Introduction to basic surgical techniques and perioperative care.', unlocked: false, completed: false, totalChapters: 9, completedChapters: 0 },
-  { id: '11', title: 'Module 11: Mental Health in Primary Care', description: 'Identifying and managing common mental health issues.', unlocked: false, completed: false, totalChapters: 5, completedChapters: 0 },
-  { id: '12', title: 'Module 12: Introduction to Radiology', description: 'Basic principles of medical imaging and interpretation.', unlocked: true, completed: true, totalChapters: 6, completedChapters: 6},
-  { id: '13', title: 'Module 13: Dermatology Basics', description: 'Common skin conditions and their treatments.', unlocked: true, completed: false, totalChapters: 4, completedChapters: 1},
-  { id: '14', title: 'Module 14: Public Health', description: 'Overview of public health systems and epidemiology.', unlocked: true, completed: true, totalChapters: 7, completedChapters: 7},
+  // Upcoming tasks
+  { id: 'assign-1', title: 'Assignment 1: Case Study Analysis', description: 'Analyze the provided case study on patient communication.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 2)), activityType: 'assignment', category: 'Clinical Communication', totalChapters: 1, completedChapters: 0 },
+  { id: 'quiz-1', title: 'Quiz: Pharmacology Basics', description: 'Test your knowledge on fundamental drug interactions.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 3)), activityType: 'quiz', category: 'Pharmacology' },
+  { id: 'reading-1', title: 'Reading: Latest Research on Diabetes', description: 'Review the new guidelines published by ADA.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 1)), activityType: 'reading', category: 'Endocrinology' },
+  { id: 'event-1', title: 'Webinar: AI in Medicine', description: 'Join the live webinar on emerging AI technologies.', unlocked: true, completed: false, dueDate: new Date(new Date(new Date().setDate(new Date().getDate() + 4)).setHours(14,0,0)), activityType: 'event', category: 'Medical Technology' },
+  
+  // Completed tasks (for "Past Due" in timeline if shown, and "Completed Modules" section)
+  { id: '1', title: 'Module 1: Introduction to Anatomy', description: 'Core concepts of human anatomy.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5, dueDate: new Date(new Date().setDate(new Date().getDate() - 7)), activityType: 'reading', category: 'Anatomy' },
+  { id: '2', title: 'Module 2: Physiology & Bodily Functions', description: 'Understanding the cardiovascular system.', unlocked: true, completed: false, totalChapters: 8, completedChapters: 3, dueDate: new Date(new Date().setDate(new Date().getDate() + 5)), activityType: 'reading', category: 'Physiology' },
+  { id: '3', title: 'Module 3: Pharmacology Fundamentals', description: 'Introduction to drug classifications.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0, dueDate: new Date(new Date().setDate(new Date().getDate() + 10)), activityType: 'reading', category: 'Pharmacology' },
+  { id: 'assign-2', title: 'Assignment: Ethical Dilemmas', description: 'Submit your paper on common ethical issues.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 5)), activityType: 'assignment', category: 'Medical Ethics' },
+  { id: 'quiz-2', title: 'Quiz: Basic Life Support', description: 'Completed BLS certification quiz.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 10)), activityType: 'quiz', category: 'Emergency Medicine' },
+  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures.', unlocked: true, completed: false, totalChapters: 10, completedChapters: 2, dueDate: new Date(new Date().setDate(new Date().getDate() + 12)), activityType: 'event', category: 'Clinical Skills' },
+  { id: '5', title: 'Module 5: Medical Ethics & Law', description: 'Understanding legal responsibilities.', unlocked: true, completed: true, totalChapters: 4, completedChapters: 4, dueDate: new Date(new Date().setDate(new Date().getDate() - 14)), activityType: 'reading', category: 'Medical Ethics' },
+  { id: '6', title: 'Module 6: Advanced Diagnostics', description: 'Exploring advanced imaging techniques.', unlocked: true, completed: false, totalChapters: 7, completedChapters: 1, dueDate: new Date(new Date().setDate(new Date().getDate() + 15)), activityType: 'reading', category: 'Diagnostics' },
+  { id: '7', title: 'Module 7: Pediatrics Overview', description: 'Fundamental concepts in pediatric care.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5, dueDate: new Date(new Date().setDate(new Date().getDate() - 3)), activityType: 'reading', category: 'Pediatrics' },
+  { id: 'assign-3', title: 'Assignment: Research Proposal', description: 'Develop a research proposal on a chosen topic.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 7)), activityType: 'assignment', category: 'Research Methods' },
+  { id: 'quiz-3', title: 'Quiz: Infection Control', description: 'Assessment on hospital infection control protocols.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 9)), activityType: 'quiz', category: 'Public Health' },
 ];
+
 
 const mockLogbookEntries: LogbookEntry[] = [
   { id: '1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), activity: 'Completed Chapter 2.3', details: 'Physiology of the Nervous System' },
