@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface WeeklyTasksSectionProps {
   modules: Module[];
@@ -19,6 +20,7 @@ const INITIAL_VISIBLE_COUNT = 2; // Number of tasks to show before collapsing
 
 const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
   const currentDueTasks = modules.filter(m => m.unlocked && !m.completed);
+  const pastDueTasks = modules.filter(m => m.unlocked && m.completed);
 
   const renderTaskSection = (tasks: Module[], accordionValuePrefix: string, emptyMessage: string) => {
     if (tasks.length === 0) {
@@ -37,7 +39,7 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
         </div>
         {hiddenTasks.length > 0 && (
           <Accordion type="single" collapsible className="w-full mt-4">
-            <AccordionItem value={`${accordionValuePrefix}-item`}>
+            <AccordionItem value={`${accordionValuePrefix}-item-${Date.now()}`}> {/* Ensure unique value for accordion item */}
               <AccordionTrigger className="text-sm hover:no-underline justify-start [&[data-state=open]>svg]:ml-2">
                 Show {hiddenTasks.length} more task{hiddenTasks.length > 1 ? 's' : ''}
               </AccordionTrigger>
@@ -62,11 +64,18 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
         <CardTitle className="text-xl font-semibold">Weekly Learning Tasks</CardTitle>
       </CardHeader>
       <CardContent>
-        {currentDueTasks.length === 0 ? (
-          <p className="text-muted-foreground">No current tasks. New modules will appear here as they unlock.</p>
-        ) : (
-          renderTaskSection(currentDueTasks, 'current-tasks', 'No current learning tasks.')
-        )}
+        <Tabs defaultValue="current" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="current">Current Due</TabsTrigger>
+            <TabsTrigger value="past">Past Due</TabsTrigger>
+          </TabsList>
+          <TabsContent value="current" className="mt-4">
+            {renderTaskSection(currentDueTasks, 'current-tasks', 'No current learning tasks due.')}
+          </TabsContent>
+          <TabsContent value="past" className="mt-4">
+            {renderTaskSection(pastDueTasks, 'past-tasks', 'No past due tasks found.')}
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );
