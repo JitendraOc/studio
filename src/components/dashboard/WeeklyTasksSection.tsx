@@ -21,7 +21,7 @@ const INITIAL_VISIBLE_COUNT = 2; // Number of tasks to show before collapsing
 const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
   const unlockedModules = modules.filter(m => m.unlocked);
   const currentDueTasks = unlockedModules.filter(m => !m.completed);
-  const pastDueTasks = unlockedModules.filter(m => m.completed);
+  const pastDueTasks = unlockedModules.filter(m => m.completed); // These are effectively completed tasks
 
   const renderTaskSection = (tasks: Module[], accordionValuePrefix: string, emptyMessage: string) => {
     if (tasks.length === 0) {
