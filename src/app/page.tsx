@@ -4,7 +4,6 @@ import LogbookSection from '@/components/dashboard/LogbookSection';
 import ProgressTrackerSection from '@/components/dashboard/ProgressTrackerSection';
 import SupportSection from '@/components/dashboard/SupportSection';
 import WeeklyTasksSection from '@/components/dashboard/WeeklyTasksSection';
-import CompletedModulesSection from '@/components/dashboard/CompletedModulesSection';
 import type { LogbookEntry, Module, SupportContact } from '@/types';
 
 // Mock Data
@@ -25,19 +24,21 @@ const mockModules: Module[] = [
   { id: 'quiz-1', title: 'Quiz: Pharmacology Basics', description: 'Test your knowledge on fundamental drug interactions.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 3)), activityType: 'quiz', category: 'Pharmacology' },
   { id: 'reading-1', title: 'Reading: Latest Research on Diabetes', description: 'Review the new guidelines published by ADA.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 1)), activityType: 'reading', category: 'Endocrinology' },
   { id: 'event-1', title: 'Webinar: AI in Medicine', description: 'Join the live webinar on emerging AI technologies.', unlocked: true, completed: false, dueDate: new Date(new Date(new Date().setDate(new Date().getDate() + 4)).setHours(14,0,0)), activityType: 'event', category: 'Medical Technology' },
+  { id: 'assign-4', title: 'Assignment 4: Patient Privacy', description: 'Write a short essay on patient privacy laws.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 6)), activityType: 'assignment', category: 'Medical Law', totalChapters: 1, completedChapters: 0 },
+  { id: 'quiz-4', title: 'Quiz: Diagnostic Tools', description: 'Identify common diagnostic tools and their uses.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 8)), activityType: 'quiz', category: 'Diagnostics' },
   
   // Completed tasks (for "Past Due" in timeline if shown, and "Completed Modules" section)
   { id: '1', title: 'Module 1: Introduction to Anatomy', description: 'Core concepts of human anatomy.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5, dueDate: new Date(new Date().setDate(new Date().getDate() - 7)), activityType: 'reading', category: 'Anatomy' },
-  { id: '2', title: 'Module 2: Physiology & Bodily Functions', description: 'Understanding the cardiovascular system.', unlocked: true, completed: false, totalChapters: 8, completedChapters: 3, dueDate: new Date(new Date().setDate(new Date().getDate() + 5)), activityType: 'reading', category: 'Physiology' },
-  { id: '3', title: 'Module 3: Pharmacology Fundamentals', description: 'Introduction to drug classifications.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0, dueDate: new Date(new Date().setDate(new Date().getDate() + 10)), activityType: 'reading', category: 'Pharmacology' },
+  { id: '2', title: 'Module 2: Physiology & Bodily Functions', description: 'Understanding the cardiovascular system.', unlocked: true, completed: true, totalChapters: 8, completedChapters: 8, dueDate: new Date(new Date().setDate(new Date().getDate() - 5)), activityType: 'reading', category: 'Physiology' },
+  { id: '3', title: 'Module 3: Pharmacology Fundamentals', description: 'Introduction to drug classifications.', unlocked: true, completed: true, totalChapters: 6, completedChapters: 6, dueDate: new Date(new Date().setDate(new Date().getDate() - 10)), activityType: 'reading', category: 'Pharmacology' },
   { id: 'assign-2', title: 'Assignment: Ethical Dilemmas', description: 'Submit your paper on common ethical issues.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 5)), activityType: 'assignment', category: 'Medical Ethics' },
   { id: 'quiz-2', title: 'Quiz: Basic Life Support', description: 'Completed BLS certification quiz.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 10)), activityType: 'quiz', category: 'Emergency Medicine' },
-  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures.', unlocked: true, completed: false, totalChapters: 10, completedChapters: 2, dueDate: new Date(new Date().setDate(new Date().getDate() + 12)), activityType: 'event', category: 'Clinical Skills' },
+  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures.', unlocked: true, completed: true, totalChapters: 10, completedChapters: 10, dueDate: new Date(new Date().setDate(new Date().getDate() - 12)), activityType: 'event', category: 'Clinical Skills' },
   { id: '5', title: 'Module 5: Medical Ethics & Law', description: 'Understanding legal responsibilities.', unlocked: true, completed: true, totalChapters: 4, completedChapters: 4, dueDate: new Date(new Date().setDate(new Date().getDate() - 14)), activityType: 'reading', category: 'Medical Ethics' },
-  { id: '6', title: 'Module 6: Advanced Diagnostics', description: 'Exploring advanced imaging techniques.', unlocked: true, completed: false, totalChapters: 7, completedChapters: 1, dueDate: new Date(new Date().setDate(new Date().getDate() + 15)), activityType: 'reading', category: 'Diagnostics' },
+  { id: '6', title: 'Module 6: Advanced Diagnostics', description: 'Exploring advanced imaging techniques.', unlocked: true, completed: true, totalChapters: 7, completedChapters: 7, dueDate: new Date(new Date().setDate(new Date().getDate() - 15)), activityType: 'reading', category: 'Diagnostics' },
   { id: '7', title: 'Module 7: Pediatrics Overview', description: 'Fundamental concepts in pediatric care.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5, dueDate: new Date(new Date().setDate(new Date().getDate() - 3)), activityType: 'reading', category: 'Pediatrics' },
-  { id: 'assign-3', title: 'Assignment: Research Proposal', description: 'Develop a research proposal on a chosen topic.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 7)), activityType: 'assignment', category: 'Research Methods' },
-  { id: 'quiz-3', title: 'Quiz: Infection Control', description: 'Assessment on hospital infection control protocols.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 9)), activityType: 'quiz', category: 'Public Health' },
+  { id: 'assign-3', title: 'Assignment: Research Proposal', description: 'Develop a research proposal on a chosen topic.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 7)), activityType: 'assignment', category: 'Research Methods' },
+  { id: 'quiz-3', title: 'Quiz: Infection Control', description: 'Assessment on hospital infection control protocols.', unlocked: true, completed: true, dueDate: new Date(new Date().setDate(new Date().getDate() - 9)), activityType: 'quiz', category: 'Public Health' },
 ];
 
 
@@ -73,7 +74,6 @@ export default function DashboardPage() {
           {/* Right Column (takes 1/3 on large screens) */}
           <div className="lg:col-span-1 space-y-6">
             <LogbookSection entries={mockLogbookEntries} />
-            <CompletedModulesSection modules={mockModules} />
             <SupportSection contact={mockSupportContact} />
           </div>
         </div>
