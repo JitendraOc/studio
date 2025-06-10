@@ -2,8 +2,6 @@
 import React from 'react';
 import type { Module } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TimelineItem from './TimelineItem';
 import { format } from 'date-fns';
@@ -36,6 +34,8 @@ const renderTimelineForTasks = (tasks: Module[], title: string) => {
 
   const groupedTasks = groupTasksByDate(tasks);
   const sortedDateKeys = Object.keys(groupedTasks).sort((a, b) => {
+    // Ensure tasks within each date group are also sorted by time if needed,
+    // but for date group sorting, use the first task's due date.
     const dateA = groupedTasks[a][0].dueDate;
     const dateB = groupedTasks[b][0].dueDate;
     return dateA.getTime() - dateB.getTime();
@@ -48,7 +48,9 @@ const renderTimelineForTasks = (tasks: Module[], title: string) => {
           <h3 className="text-md font-semibold text-primary my-3 sticky top-0 bg-background/95 py-2 z-10 backdrop-blur-sm">
             {dateKey}
           </h3>
-          {groupedTasks[dateKey].map((module, index, arr) => (
+          {groupedTasks[dateKey]
+            .sort((a,b) => a.dueDate.getTime() - b.dueDate.getTime()) // Sort tasks within the same day by time
+            .map((module, index, arr) => (
             <TimelineItem key={module.id} module={module} isLastItem={index === arr.length - 1} />
           ))}
         </div>
@@ -63,7 +65,7 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
     .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
 
   const pastDueTasks = modules
-    .filter(m => m.unlocked && m.completed)
+    .filter(m => m.unlocked && m.completed) // Assuming past due means completed for now
     .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
 
   return (
@@ -74,35 +76,6 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
             <CalendarClock className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl font-semibold">Timeline</CardTitle>
           </div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2 pt-4">
-          <Select defaultValue="all">
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Filter by type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="assignment">Assignments</SelectItem>
-              <SelectItem value="quiz">Quizzes</SelectItem>
-              <SelectItem value="reading">Readings</SelectItem>
-              <SelectItem value="event">Events</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select defaultValue="dueDate">
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="dueDate">Sort by Date</SelectItem>
-              <SelectItem value="activityType">Sort by Type</SelectItem>
-              <SelectItem value="title">Sort by Name</SelectItem>
-            </SelectContent>
-          </Select>
-          <Input
-            type="search"
-            placeholder="Search by activity type or name..."
-            className="flex-grow"
-          />
         </div>
       </CardHeader>
       <CardContent>
