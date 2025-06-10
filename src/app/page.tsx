@@ -1,3 +1,4 @@
+
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import LogbookSection from '@/components/dashboard/LogbookSection';
 import ProgressTrackerSection from '@/components/dashboard/ProgressTrackerSection';
@@ -10,8 +11,14 @@ const mockModules: Module[] = [
   { id: '1', title: 'Module 1: Introduction to Anatomy', description: 'Core concepts of human anatomy, skeletal system, and musculature.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5 },
   { id: '2', title: 'Module 2: Physiology & Bodily Functions', description: 'Understanding the cardiovascular, respiratory, and nervous systems.', unlocked: true, completed: false, totalChapters: 8, completedChapters: 3 },
   { id: '3', title: 'Module 3: Pharmacology Fundamentals', description: 'Introduction to drug classifications, pharmacokinetics, and pharmacodynamics.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0 },
-  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures and patient interaction.', unlocked: false, completed: false, totalChapters: 10, completedChapters: 0 },
-  { id: '5', title: 'Module 5: Medical Ethics & Law', description: 'Understanding legal responsibilities and ethical considerations in healthcare.', unlocked: false, completed: false, totalChapters: 4, completedChapters: 0 },
+  { id: '4', title: 'Module 4: Clinical Skills Workshop', description: 'Practical application of diagnostic procedures and patient interaction.', unlocked: true, completed: false, totalChapters: 10, completedChapters: 2 },
+  { id: '5', title: 'Module 5: Medical Ethics & Law', description: 'Understanding legal responsibilities and ethical considerations in healthcare.', unlocked: true, completed: true, totalChapters: 4, completedChapters: 4 },
+  { id: '6', title: 'Module 6: Advanced Diagnostics', description: 'Exploring advanced imaging techniques and laboratory tests.', unlocked: true, completed: false, totalChapters: 7, completedChapters: 1 },
+  { id: '7', title: 'Module 7: Pediatrics Overview', description: 'Fundamental concepts in pediatric care and common childhood illnesses.', unlocked: true, completed: true, totalChapters: 5, completedChapters: 5 },
+  { id: '8', title: 'Module 8: Geriatric Medicine', description: 'Special considerations for elderly patient care.', unlocked: true, completed: false, totalChapters: 6, completedChapters: 0 },
+  { id: '9', title: 'Module 9: Emergency Medicine Basics', description: 'Initial assessment and management of emergency medical conditions.', unlocked: true, completed: true, totalChapters: 8, completedChapters: 8 },
+  { id: '10', title: 'Module 10: Surgical Principles', description: 'Introduction to basic surgical techniques and perioperative care.', unlocked: false, completed: false, totalChapters: 9, completedChapters: 0 },
+  { id: '11', title: 'Module 11: Mental Health in Primary Care', description: 'Identifying and managing common mental health issues.', unlocked: false, completed: false, totalChapters: 5, completedChapters: 0 },
 ];
 
 const mockLogbookEntries: LogbookEntry[] = [
