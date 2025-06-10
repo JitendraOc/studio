@@ -4,6 +4,7 @@ import LogbookSection from '@/components/dashboard/LogbookSection';
 import ProgressTrackerSection from '@/components/dashboard/ProgressTrackerSection';
 import SupportSection from '@/components/dashboard/SupportSection';
 import WeeklyTasksSection from '@/components/dashboard/WeeklyTasksSection';
+import CompletedModulesSection from '@/components/dashboard/CompletedModulesSection';
 import type { LogbookEntry, Module, SupportContact } from '@/types';
 
 // Mock Data
@@ -19,6 +20,9 @@ const mockModules: Module[] = [
   { id: '9', title: 'Module 9: Emergency Medicine Basics', description: 'Initial assessment and management of emergency medical conditions.', unlocked: true, completed: true, totalChapters: 8, completedChapters: 8 },
   { id: '10', title: 'Module 10: Surgical Principles', description: 'Introduction to basic surgical techniques and perioperative care.', unlocked: false, completed: false, totalChapters: 9, completedChapters: 0 },
   { id: '11', title: 'Module 11: Mental Health in Primary Care', description: 'Identifying and managing common mental health issues.', unlocked: false, completed: false, totalChapters: 5, completedChapters: 0 },
+  { id: '12', title: 'Module 12: Introduction to Radiology', description: 'Basic principles of medical imaging and interpretation.', unlocked: true, completed: true, totalChapters: 6, completedChapters: 6},
+  { id: '13', title: 'Module 13: Dermatology Basics', description: 'Common skin conditions and their treatments.', unlocked: true, completed: false, totalChapters: 4, completedChapters: 1},
+  { id: '14', title: 'Module 14: Public Health', description: 'Overview of public health systems and epidemiology.', unlocked: true, completed: true, totalChapters: 7, completedChapters: 7},
 ];
 
 const mockLogbookEntries: LogbookEntry[] = [
@@ -53,6 +57,7 @@ export default function DashboardPage() {
           {/* Right Column (takes 1/3 on large screens) */}
           <div className="lg:col-span-1 space-y-6">
             <LogbookSection entries={mockLogbookEntries} />
+            <CompletedModulesSection modules={mockModules} />
             <SupportSection contact={mockSupportContact} />
           </div>
         </div>

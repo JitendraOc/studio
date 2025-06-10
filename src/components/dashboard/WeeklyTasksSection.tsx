@@ -10,7 +10,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface WeeklyTasksSectionProps {
   modules: Module[];
@@ -19,9 +18,7 @@ interface WeeklyTasksSectionProps {
 const INITIAL_VISIBLE_COUNT = 2; // Number of tasks to show before collapsing
 
 const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
-  const unlockedModules = modules.filter(m => m.unlocked);
-  const currentDueTasks = unlockedModules.filter(m => !m.completed);
-  const pastDueTasks = unlockedModules.filter(m => m.completed); // These are effectively completed tasks
+  const currentDueTasks = modules.filter(m => m.unlocked && !m.completed);
 
   const renderTaskSection = (tasks: Module[], accordionValuePrefix: string, emptyMessage: string) => {
     if (tasks.length === 0) {
@@ -65,21 +62,10 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
         <CardTitle className="text-xl font-semibold">Weekly Learning Tasks</CardTitle>
       </CardHeader>
       <CardContent>
-        {unlockedModules.length === 0 ? (
-          <p className="text-muted-foreground">No tasks available yet. New modules will appear here as they unlock.</p>
+        {currentDueTasks.length === 0 ? (
+          <p className="text-muted-foreground">No current tasks. New modules will appear here as they unlock.</p>
         ) : (
-          <Tabs defaultValue="current-due" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="current-due">Current Due</TabsTrigger>
-              <TabsTrigger value="past-due">Past Due</TabsTrigger>
-            </TabsList>
-            <TabsContent value="current-due">
-              {renderTaskSection(currentDueTasks, 'current-due', 'No current due tasks.')}
-            </TabsContent>
-            <TabsContent value="past-due">
-              {renderTaskSection(pastDueTasks, 'past-due', 'No past due (completed) tasks found.')}
-            </TabsContent>
-          </Tabs>
+          renderTaskSection(currentDueTasks, 'current-tasks', 'No current learning tasks.')
         )}
       </CardContent>
     </Card>
