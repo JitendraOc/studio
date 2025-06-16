@@ -21,7 +21,7 @@ const LogbookSection = ({ entries }) => {
     <Card
       title={cardTitle}
       style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} // Approximating shadow-lg
-      bodyStyle={{ height: '270px', overflowY: 'auto', padding: recentEntries.length > 0 ? '0 24px 16px' : '24px' }} // Adjust padding based on content
+      styles={{ body: { height: '270px', overflowY: 'auto', padding: recentEntries.length > 0 ? '0 24px 16px' : '24px' } }} // Adjust padding based on content
     >
       {recentEntries.length === 0 ? (
         <Text type="secondary">No recent activity.</Text>

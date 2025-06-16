@@ -2,10 +2,9 @@
 import React from 'react';
 import { Card, Tabs, Timeline, Typography } from 'antd';
 import { ScheduleOutlined } from '@ant-design/icons';
-import TimelineItem from './TimelineItem'; // Assuming this is the converted AntD compatible item
+import TimelineItem from './TimelineItem';
 import { format, parse } from 'date-fns';
 
-const { TabPane } = Tabs;
 const { Title, Text } = Typography;
 
 const groupTasksByDate = (tasks) => {
@@ -39,13 +38,13 @@ const renderTimelineForTasks = (tasks, titleSuffix) => {
           <Title level={5} style={{ color: '#1890ff', margin: '16px 0 8px 0', /* Removed sticky behavior */ }}>
             {dateKey}
           </Title>
-          <Timeline>
-            {groupedTasks[dateKey]
+          <Timeline
+            items={groupedTasks[dateKey]
               .sort((taskA, taskB) => new Date(taskA.dueDate).getTime() - new Date(taskB.dueDate).getTime())
               .map(module => (
-                <TimelineItem key={module.id} module={module} /> // isLastItem is not needed
+                TimelineItem({ module })
               ))}
-          </Timeline>
+          />
         </div>
       ))}
     </div>
@@ -57,7 +56,7 @@ const WeeklyTasksSection = ({ modules }) => {
     .filter(m => m.unlocked && !m.completed)
     .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
 
-  const pastDueTasks = modules // This means "completed tasks"
+  const pastDueTasks = modules
     .filter(m => m.unlocked && m.completed)
     .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
 
@@ -68,19 +67,25 @@ const WeeklyTasksSection = ({ modules }) => {
     </div>
   );
 
+  const tabItems = [
+    {
+      label: "Current Due",
+      key: "currentDue",
+      children: renderTimelineForTasks(currentDueTasks, "Current Due"),
+    },
+    {
+      label: "Past Due / Completed",
+      key: "pastDue",
+      children: renderTimelineForTasks(pastDueTasks, "Past Due / Completed"),
+    },
+  ];
+
   return (
     <Card
       title={cardTitle}
       style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
     >
-      <Tabs defaultActiveKey="currentDue" centered>
-        <TabPane tab="Current Due" key="currentDue">
-          {renderTimelineForTasks(currentDueTasks, "Current Due")}
-        </TabPane>
-        <TabPane tab="Past Due / Completed" key="pastDue">
-          {renderTimelineForTasks(pastDueTasks, "Past Due / Completed")}
-        </TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="currentDue" centered items={tabItems} />
     </Card>
   );
 };

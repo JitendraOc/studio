@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Layout, Typography, Avatar } from 'antd';
 import { MedicineBoxOutlined, UserOutlined } from '@ant-design/icons';

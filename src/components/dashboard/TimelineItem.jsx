@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Timeline, Button, Typography, Space } from 'antd';
+import { Button, Typography } from 'antd';
 import {
   UploadOutlined,
   OrderedListOutlined,
@@ -13,14 +13,14 @@ import { format } from 'date-fns';
 
 const { Text, Title } = Typography;
 
-const TimelineItem = ({ module, isLastItem /* isLastItem is not used by AntD Timeline.Item directly */ }) => {
+const TimelineItem = ({ module }) => {
   let AntIconComponent;
   let actionButtonText = "View Details";
-  let antdButtonType = "default"; // 'primary', 'ghost', 'dashed', 'link', 'text', 'default'
+  let antdButtonType = "default";
 
   if (module.completed) {
     AntIconComponent = CheckCircleOutlined;
-    antdButtonType = "default"; // Or perhaps 'dashed' for a less prominent completed action
+    antdButtonType = "default";
     switch (module.activityType) {
       case 'assignment':
         actionButtonText = "View Submission";
@@ -29,7 +29,7 @@ const TimelineItem = ({ module, isLastItem /* isLastItem is not used by AntD Tim
         actionButtonText = "Review Quiz";
         break;
       default:
-        actionButtonText = "View Details"; // Keep as default
+        actionButtonText = "View Details";
     }
   } else {
     switch (module.activityType) {
@@ -46,47 +46,42 @@ const TimelineItem = ({ module, isLastItem /* isLastItem is not used by AntD Tim
       case 'reading':
         AntIconComponent = BookOutlined;
         actionButtonText = "Start Reading";
-        // antdButtonType remains 'default' (outline-like)
         break;
       case 'event':
         AntIconComponent = CalendarOutlined;
         actionButtonText = "View Event";
-        // antdButtonType remains 'default'
         break;
       default:
         AntIconComponent = QuestionCircleOutlined;
-        // antdButtonType remains 'default'
     }
   }
 
-  const iconColor = module.completed ? 'green' : '#1890ff'; // AntD primary blue
+  const iconColor = module.completed ? 'green' : '#1890ff';
 
   return (
-    <Timeline.Item
-      dot={<AntIconComponent style={{ fontSize: '20px', color: iconColor }} />}
-      color={module.completed ? 'green' : 'blue'} // Line color
-      // The 'label' prop could be used for the time, for a left-aligned time column
-      // label={<Text type="secondary">{format(new Date(module.dueDate), 'HH:mm')}</Text>}
-      style={{ paddingBottom: '20px' }} // Mimic py-4, adjust as needed
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginLeft: '16px' }}>
-        <div style={{ flexGrow: 1, marginRight: '16px' }}>
-          <Title level={5} style={{ marginBottom: '2px', fontWeight: '500' }}>{module.title}</Title>
-          <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>
-            Due: {format(new Date(module.dueDate), 'MMM dd, yyyy - HH:mm')}
-          </Text>
-          <Text style={{ display: 'block', marginBottom: '8px' }}>
-            {module.description}
-            {module.category && <Text type="secondary"> - {module.category}</Text>}
-          </Text>
+    {
+      dot: <AntIconComponent style={{ fontSize: '20px', color: iconColor }} />,
+      color: module.completed ? 'green' : 'blue',
+      children: (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginLeft: '16px' }}>
+          <div style={{ flexGrow: 1, marginRight: '16px' }}>
+            <Title level={5} style={{ marginBottom: '2px', fontWeight: '500' }}>{module.title}</Title>
+            <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>
+              Due: {format(new Date(module.dueDate), 'MMM dd, yyyy - HH:mm')}
+            </Text>
+            <Text style={{ display: 'block', marginBottom: '8px' }}>
+              {module.description}
+              {module.category && <Text type="secondary"> - {module.category}</Text>}
+            </Text>
+          </div>
+          <div style={{ flexShrink: 0 }}>
+            <Button type={antdButtonType} size="small">
+              {actionButtonText}
+            </Button>
+          </div>
         </div>
-        <div style={{ flexShrink: 0 }}>
-          <Button type={antdButtonType} size="small">
-            {actionButtonText}
-          </Button>
-        </div>
-      </div>
-    </Timeline.Item>
+      )
+    }
   );
 };
 
