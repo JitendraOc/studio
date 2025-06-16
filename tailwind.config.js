@@ -1,10 +1,9 @@
-import type {Config} from 'tailwindcss';
-
-export default {
+module.exports = {
   darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    // Ensure src/components paths are accurate if they were changed from .tsx to .jsx
+    './src/components/**/*.{js,jsx,tsx,mdx}', // Added .jsx explicitly, .ts can be removed if all converted
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
@@ -96,4 +95,4 @@ export default {
     },
   },
   plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+};
