@@ -1,22 +1,20 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "skipLibCheck": true, // Can be kept, but less relevant
-    "outDir": "./dist", // This is a TS compile option, less relevant for jsconfig for pathing
-    "sourceMap": true, // Also a compile option
-    "module": "commonjs", // Module system for Node.js
-    "moduleResolution": "node", // Resolution strategy
-    "resolveJsonModule": true, // Useful for importing JSON
-    "jsx": "react", // To process JSX correctly
-    "baseUrl": ".", // Important for path resolution
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./dist/src/*"] // Updated path to point to compiled JS files in dist
+      "@/*": ["./src/*"]
     }
   },
   "include": [
-    "dist/**/*.js", // Include all JS files in dist
-    "dist/**/*.jsx", // Include all JSX files in dist
-    ".next/types/**/*.ts" // Next.js specific, often for its own type generation
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts" // Next.js internal types
   ],
-  "exclude": ["node_modules", "src"] // Exclude original src and node_modules
+  "exclude": ["node_modules"]
 }
