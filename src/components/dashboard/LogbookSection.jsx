@@ -1,15 +1,10 @@
 import React from 'react';
-import type { LogbookEntry as LogbookEntryType } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LogEntryItem from './LogEntryItem';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ClipboardList } from 'lucide-react';
 
-interface LogbookSectionProps {
-  entries: LogbookEntryType[];
-}
-
-const LogbookSection: React.FC<LogbookSectionProps> = ({ entries }) => {
+const LogbookSection = ({ entries }) => {
   const recentEntries = entries.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 10); // Show latest 10
 
   return (

@@ -1,10 +1,8 @@
-
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import LogbookSection from '@/components/dashboard/LogbookSection';
 import ProgressTrackerSection from '@/components/dashboard/ProgressTrackerSection';
 import SupportSection from '@/components/dashboard/SupportSection';
 import WeeklyTasksSection from '@/components/dashboard/WeeklyTasksSection';
-import type { LogbookEntry, Module, SupportContact } from '@/types';
 
 // Mock Data
 const now = new Date();
@@ -18,7 +16,7 @@ const twoDaysAgo = new Date(now);
 twoDaysAgo.setDate(now.getDate() - 2);
 
 
-const mockModules: Module[] = [
+const mockModules = [
   // Upcoming tasks
   { id: 'assign-1', title: 'Assignment 1: Case Study Analysis', description: 'Analyze the provided case study on patient communication.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 2)), activityType: 'assignment', category: 'Clinical Communication', totalChapters: 1, completedChapters: 0 },
   { id: 'quiz-1', title: 'Quiz: Pharmacology Basics', description: 'Test your knowledge on fundamental drug interactions.', unlocked: true, completed: false, dueDate: new Date(new Date().setDate(new Date().getDate() + 3)), activityType: 'quiz', category: 'Pharmacology' },
@@ -42,7 +40,7 @@ const mockModules: Module[] = [
 ];
 
 
-const mockLogbookEntries: LogbookEntry[] = [
+const mockLogbookEntries = [
   { id: '1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), activity: 'Completed Chapter 2.3', details: 'Physiology of the Nervous System' },
   { id: '2', date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), activity: 'Attended Webinar', details: 'Advanced Cardiac Life Support (ACLS) Updates' },
   { id: '3', date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), activity: 'Module 1 Assessment', details: 'Achieved 92% score.' },
@@ -50,7 +48,7 @@ const mockLogbookEntries: LogbookEntry[] = [
   { id: '5', date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), activity: 'Joined Study Group', details: 'Pharmacology Review Session' },
 ];
 
-const mockSupportContact: SupportContact = {
+const mockSupportContact = {
   name: 'Dr. Evelyn Reed',
   role: 'Lead Course Advisor',
   email: 'e.reed@medicalcourse.edu',

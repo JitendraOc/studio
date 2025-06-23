@@ -2,7 +2,7 @@ import React from 'react';
 import { BriefcaseMedical, UserCircle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-const DashboardHeader: React.FC = () => {
+const DashboardHeader = () => {
   return (
     <header className="bg-card shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

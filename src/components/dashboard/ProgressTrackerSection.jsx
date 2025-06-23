@@ -1,14 +1,9 @@
 import React from 'react';
-import type { Module } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TrendingUp, Gauge } from 'lucide-react';
 
-interface ProgressTrackerSectionProps {
-  modules: Module[];
-}
-
-const ProgressTrackerSection: React.FC<ProgressTrackerSectionProps> = ({ modules }) => {
+const ProgressTrackerSection = ({ modules }) => {
   const totalModules = modules.length;
   
   const unlockedCount = modules.filter(m => m.unlocked).length;

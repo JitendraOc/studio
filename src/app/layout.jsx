@@ -1,17 +1,14 @@
-import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Medical Professional Course Dashboard',
   description: 'Dashboard for medical professionals to track course progress and tasks.',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
