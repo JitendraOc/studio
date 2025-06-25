@@ -6,14 +6,18 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import TimelineItem from './TimelineItem';
 import { format } from 'date-fns';
 import { CalendarClock } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CourseSelector from './CourseSelector';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 interface WeeklyTasksSectionProps {
   modules: Module[];
   courses: Course[];
   selectedCourseId: string;
   onCourseChange: (courseId: string) => void;
+  weeks: Date[];
+  selectedWeek: string;
+  onWeekChange: (week: string) => void;
 }
 
 interface GroupedTasks {
@@ -31,15 +35,13 @@ const groupTasksByDate = (tasks: Module[]): GroupedTasks => {
   }, {} as GroupedTasks);
 };
 
-const renderTimelineForTasks = (tasks: Module[], title: string) => {
+const renderTimelineForTasks = (tasks: Module[]) => {
   if (tasks.length === 0) {
-    return <p className="text-muted-foreground text-center py-8">No {title.toLowerCase()} tasks in the timeline yet.</p>;
+    return <p className="text-muted-foreground text-center py-8">No tasks for the selected week.</p>;
   }
 
   const groupedTasks = groupTasksByDate(tasks);
   const sortedDateKeys = Object.keys(groupedTasks).sort((a, b) => {
-    // Ensure tasks within each date group are also sorted by time if needed,
-    // but for date group sorting, use the first task's due date.
     const dateA = groupedTasks[a][0].dueDate;
     const dateB = groupedTasks[b][0].dueDate;
     return dateA.getTime() - dateB.getTime();
@@ -63,43 +65,66 @@ const renderTimelineForTasks = (tasks: Module[], title: string) => {
   );
 };
 
-const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules, courses, selectedCourseId, onCourseChange }) => {
-  const currentDueTasks = modules
-    .filter(m => m.unlocked && !m.completed)
-    .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
+const WeekSelector: React.FC<{
+  weeks: Date[];
+  selectedWeek: string;
+  onWeekChange: (week: string) => void;
+}> = ({ weeks, selectedWeek, onWeekChange }) => {
+  return (
+    <div className="w-full md:w-72">
+      <Select value={selectedWeek} onValueChange={onWeekChange}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a week..." />
+        </SelectTrigger>
+        <SelectContent>
+          {weeks.map(week => {
+            const weekISO = week.toISOString();
+            return (
+              <SelectItem key={weekISO} value={weekISO}>
+                {`Week of ${format(week, 'MMM dd, yyyy')}`}
+              </SelectItem>
+            )
+          })}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
 
-  const pastDueTasks = modules
-    .filter(m => m.unlocked && m.completed) // Assuming past due means completed for now
-    .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
 
+const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({
+  modules,
+  courses,
+  selectedCourseId,
+  onCourseChange,
+  weeks,
+  selectedWeek,
+  onWeekChange
+}) => {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-2 self-start">
             <CalendarClock className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl font-semibold">Timeline</CardTitle>
           </div>
-          <CourseSelector
-            courses={courses}
-            selectedCourseId={selectedCourseId}
-            onCourseChange={onCourseChange}
-          />
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+            <CourseSelector
+              courses={courses}
+              selectedCourseId={selectedCourseId}
+              onCourseChange={onCourseChange}
+            />
+            <WeekSelector
+              weeks={weeks}
+              selectedWeek={selectedWeek}
+              onWeekChange={onWeekChange}
+            />
+          </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="currentDue" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="currentDue">Current Due</TabsTrigger>
-            <TabsTrigger value="pastDue">Past Due</TabsTrigger>
-          </TabsList>
-          <TabsContent value="currentDue" className="mt-4">
-            {renderTimelineForTasks(currentDueTasks, "Current Due")}
-          </TabsContent>
-          <TabsContent value="pastDue" className="mt-4">
-            {renderTimelineForTasks(pastDueTasks, "Past Due")}
-          </TabsContent>
-        </Tabs>
+      <CardContent className="mt-4">
+        {renderTimelineForTasks(modules)}
       </CardContent>
     </Card>
   );
