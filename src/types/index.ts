@@ -1,6 +1,12 @@
 
+export interface Course {
+  id: string;
+  title: string;
+}
+
 export interface Module {
   id: string;
+  courseId: string;
   title: string;
   description: string;
   unlocked: boolean;
