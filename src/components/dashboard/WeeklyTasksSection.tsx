@@ -1,15 +1,19 @@
 
 import React from 'react';
-import type { Module } from '@/types';
+import type { Module, Course } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TimelineItem from './TimelineItem';
 import { format } from 'date-fns';
 import { CalendarClock } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import CourseSelector from './CourseSelector';
 
 interface WeeklyTasksSectionProps {
   modules: Module[];
+  courses: Course[];
+  selectedCourseId: string;
+  onCourseChange: (courseId: string) => void;
 }
 
 interface GroupedTasks {
@@ -59,7 +63,7 @@ const renderTimelineForTasks = (tasks: Module[], title: string) => {
   );
 };
 
-const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
+const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules, courses, selectedCourseId, onCourseChange }) => {
   const currentDueTasks = modules
     .filter(m => m.unlocked && !m.completed)
     .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
@@ -76,6 +80,11 @@ const WeeklyTasksSection: React.FC<WeeklyTasksSectionProps> = ({ modules }) => {
             <CalendarClock className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl font-semibold">Timeline</CardTitle>
           </div>
+          <CourseSelector
+            courses={courses}
+            selectedCourseId={selectedCourseId}
+            onCourseChange={onCourseChange}
+          />
         </div>
       </CardHeader>
       <CardContent>

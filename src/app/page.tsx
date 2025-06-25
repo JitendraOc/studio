@@ -75,16 +75,17 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <DashboardHeader
-        courses={mockCourses}
-        selectedCourseId={selectedCourseId}
-        onCourseChange={handleCourseChange}
-      />
+      <DashboardHeader />
       <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8 space-y-8">
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column (takes 2/3 on large screens) */}
           <div className="lg:col-span-2 space-y-6">
-            <WeeklyTasksSection modules={filteredModules} />
+            <WeeklyTasksSection
+              modules={filteredModules}
+              courses={mockCourses}
+              selectedCourseId={selectedCourseId}
+              onCourseChange={handleCourseChange}
+            />
             <ProgressTrackerSection modules={filteredModules} />
           </div>
           {/* Right Column (takes 1/3 on large screens) */}
