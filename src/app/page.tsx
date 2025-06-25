@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import LogbookSection from '@/components/dashboard/LogbookSection';
 import ProgressTrackerSection from '@/components/dashboard/ProgressTrackerSection';
@@ -56,12 +57,21 @@ const mockSupportContact: SupportContact = {
 
 export default function DashboardPage() {
   const [selectedCourseId, setSelectedCourseId] = useState<string>(mockCourses[0].id);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleCourseChange = (courseId: string) => {
     setSelectedCourseId(courseId);
   };
 
   const filteredModules = mockModules.filter(module => module.courseId === selectedCourseId);
+
+  if (!isClient) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
